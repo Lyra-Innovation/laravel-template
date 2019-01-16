@@ -1,0 +1,23 @@
+{
+  "name": "playerprofile",
+  "params": {
+    "name_lang": {
+      "id": 2
+    },
+    "name_value": {
+      "id": 2
+    }
+  },
+  "children": {
+    "profile-data": {
+      "params": {},
+      "children": {
+        "0": {
+          "description_content": {
+            "id": 2
+          }
+        }
+      }
+    }
+  }
+}

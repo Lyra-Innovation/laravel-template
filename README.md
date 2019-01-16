@@ -1,1 +1,2 @@
-# laravel-template
+- docker-compose up
+- enjoy :)
