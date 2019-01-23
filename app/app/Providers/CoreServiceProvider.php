@@ -16,7 +16,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        
     }
 
     /**
@@ -26,8 +26,13 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(DataManager::class, function ($app) {
+            return new DataManager();
+        });
+
         $this->app->singleton(ViewComponenet::class, function ($app) {
             return new ViewComponenet();
         });
+
     }
 }

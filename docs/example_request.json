@@ -1,5 +1,5 @@
 {
-  "name": "playerprofile",
+  "view": "playerprofile",
   "params": {
     "name_lang": {
       "id": 2
@@ -13,9 +13,10 @@
       "params": {},
       "children": {
         "0": {
-          "description_content": {
+          "params" :{
             "id": 2
-          }
+          },
+          "children" : {}
         }
       }
     }

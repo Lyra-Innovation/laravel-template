@@ -1,24 +1,26 @@
 {
-  "name": "playerprofile",
-  "type": "profile",
-  "values": {
-    "surname_lang": "surname",
-    "age_lang": "_age",
-    "name_lang": null,
-    "name_value": "Eric"
-  },
-  "children": {
-    "profile-data": {
-      "type": "vertical-layout",
-      "values": {
-        "title_lang": "_profile_data"
-      },
-      "children": {
-        "0": {
-          "type": "description",
-          "values": {
-            "description_title": "_lang",
-            "description_content": "This is a cool person"
+  "view": "playerprofile",
+  "layout": {
+    "type": "profile",
+    "values": {
+      "surname_lang": "surname",
+      "age_lang": "_age",
+      "name_lang": null,
+      "name_value": "Eric"
+    },
+    "children": {
+      "profile-data": {
+        "type": "vertical-layout",
+        "values": {
+          "title_lang": "_profile_data"
+        },
+        "children": {
+          "0": {
+            "type": "description",
+            "values": {
+              "description_title": "_lang",
+              "description_content": "This is a cool person"
+            }
           }
         }
       }

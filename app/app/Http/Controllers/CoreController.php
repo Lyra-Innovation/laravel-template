@@ -16,7 +16,36 @@ class CoreController extends Controller {
     }
 
     public function getConfig() {
-        return $this->view->merge("test");
+
+        $inputString = '{
+          "view": "playerprofile",
+          "params": {
+            "name_lang": {
+              "id": 2
+            },
+            "name_value": {
+              "id": 2
+            }
+          },
+          "children": {
+            "profile-data": {
+              "params": {},
+              "children": {
+                "0": {
+                  "params" :{
+                    "id": 2
+                  },
+                  "children" : {}
+                }
+              }
+            }
+          }
+        }
+        ';
+
+        $input = json_decode($inputString);
+
+        return json_encode($this->view->merge($input));
     }
 
 }

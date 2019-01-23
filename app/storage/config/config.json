@@ -1,8 +1,9 @@
 {
-    "playerprofile": {
-      "name": "playerprofile",
+  "playerprofile": {
+    "view": "playerprofile",
+    "capabilities": "public",
+    "layout": {
       "type": "profile",
-      "capabilities": "public",
       "values": {
         "surname_lang": "surname",
         "age_lang": {
@@ -10,15 +11,16 @@
         },
         "name_lang": {
           "default": "_name",
-          "query" : {
-            "table" : "user",
-            "function" : "selectById"
+          "query": {
+            "table": "user",
+            "function": "selectById",
+            "inputs" : ["id"]
           }
         },
         "name_value": {
           "query": {
-            "table" : "user",
-            "function" : "selectById"
+            "table": "user",
+            "function": "selectById"
           }
         },
         "person_icon": "people-big"
@@ -31,13 +33,15 @@
           },
           "children": {
             "0": {
+              "multiple": true,
               "type": "description",
               "values": {
                 "description_title": "_lang",
                 "description_content": {
                   "query": {
-                    "table" : "user",
-                    "function" : "selectById"
+                    "table": "user",
+                    "function": "selectAll",
+                    "inputs" : []
                   }
                 }
               }
@@ -47,4 +51,4 @@
       }
     }
   }
-  
+}

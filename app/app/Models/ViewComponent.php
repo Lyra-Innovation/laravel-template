@@ -4,6 +4,11 @@ namespace App;
 
 class ViewComponenet {
     private $obj;
+    private $dataManager;
+
+    public function __construct(DataManager $dataManager) {
+        $this->dataManager = $dataManager;
+    }
 
     public function merge($input) {
 
@@ -11,22 +16,25 @@ class ViewComponenet {
         $json = \Storage::get('config/config.json');
         $config = json_decode($json);
 
-        return $this->mergeComponent($config, $input);
+        // check capabilities
+
+        return $this->mergeComponent($config->{$input->view}->layout, $input);
     }
 
     private function mergeComponent($config, $input) {
         // root for merging, $input = component
         // we can do checks here, call others...
-
         $output = new \stdClass();
 
         $output->type = $config->type;
-        $output->values = $this->extractValues($config->values, $input->values);
+        $output->values = $this->extractValues($config->values, $input->params);
 
         //recursive call foreach children
         $output->children = new \stdClass();
-        foreach($config->children as $key => $nextConfig) {
-            $output->children[$key] = mergeComponent($nextConfig, $input[$key]);
+        if(property_exists($config, "children")) {
+            foreach($config->children as $key => $nextConfig) {
+                $output->children->{$key} = $this->mergeComponent($nextConfig, $input->children->{$key});
+            }
         }
 
         return $output;
@@ -36,13 +44,13 @@ class ViewComponenet {
         $output = new \stdClass();
 
         foreach($values as $key => $value) {
-            $output[$key] = $this->extractSingleValue($value, $input[$key]);
+            $output->{$key} = $this->extractSingleValue($value, $input, $key);
         }
 
         return $output;
     }
 
-    private function extractSingleValue($value, $input) {
+    private function extractSingleValue($value, $input, $key) {
         // always returns string
 
         // simple case where the value is already an string
@@ -52,8 +60,11 @@ class ViewComponenet {
 
         $result = null;
         //first we run the query if present
-        if(property_exists("query", $value)) {
-            // $result = $this->queryManager->exec($value->query);
+        if(property_exists($value, "query")) {
+            $query_params = new \stdClass();
+            if(property_exists($input, $key)) $query_params = $input->{$key};
+            
+            $result = $this->dataManager->exec($value->query, $query_params);
         }
 
         //if query result is null, we get the default value
