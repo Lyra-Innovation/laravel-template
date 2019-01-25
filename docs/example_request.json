@@ -1,24 +1,39 @@
 {
-  "view": "playerprofile",
-  "params": {
-    "name_lang": {
-      "id": 2
-    },
-    "name_value": {
-      "id": 2
-    }
-  },
-  "children": {
-    "profile-data": {
-      "params": {},
+  "views": {
+    "playerprofile": {
+      "view": "playerprofile",
+      "params": {
+        "name_lang": {
+          "id": 2
+        },
+        "name_value": {
+          "id": 2
+        }
+      },
       "children": {
-        "0": {
-          "params" :{
-            "id": 2
-          },
-          "children" : {}
+        "profile-data": {
+          "params": {},
+          "children": {
+            "0": {
+              "params": {
+                "id": 2
+              },
+              "children": {}
+            }
+          }
         }
       }
     }
-  }
+  },
+  "actions": [
+    {
+      "action": "create",
+      "model": "user",
+      "params": {
+        "id": null,
+        "name": "Martin",
+        "description": "I'm god"
+      }
+    }
+  ]
 }

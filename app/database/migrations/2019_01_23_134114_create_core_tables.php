@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use App\ViewComponent;
+
 class CreateCoreTables extends Migration
 {
     /**
@@ -13,7 +15,7 @@ class CreateCoreTables extends Migration
      */
     public function up()
     {
-        //
+        
     }
 
     /**

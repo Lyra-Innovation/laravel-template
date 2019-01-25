@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\ViewComponenet as ViewComponenet;
+use App\ViewComponent as ViewComponent;
 
 class CoreController extends Controller {
 
-    public function __construct(ViewComponenet $view)
+    public function __construct(ViewComponent $view)
     {
         $this->view = $view;
     }
@@ -20,9 +20,6 @@ class CoreController extends Controller {
         $inputString = '{
           "view": "playerprofile",
           "params": {
-            "name_lang": {
-              "id": 2
-            },
             "name_value": {
               "id": 2
             }

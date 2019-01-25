@@ -2,7 +2,7 @@
 
 namespace App;
 
-class ViewComponenet {
+class ViewComponent {
     private $obj;
     private $dataManager;
 
@@ -68,7 +68,7 @@ class ViewComponenet {
         }
 
         //if query result is null, we get the default value
-        if($result == null) {
+        if($result === null) {
             $result = $value->default;
         }
 

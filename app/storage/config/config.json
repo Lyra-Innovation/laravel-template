@@ -5,22 +5,19 @@
     "layout": {
       "type": "profile",
       "values": {
-        "surname_lang": "surname",
+        "surname_lang": "_surname",
         "age_lang": {
           "default": "_age"
         },
         "name_lang": {
-          "default": "_name",
-          "query": {
-            "table": "user",
-            "function": "selectById",
-            "inputs" : ["id"]
-          }
+          "default": "_name"
         },
         "name_value": {
           "query": {
-            "table": "user",
-            "function": "selectById"
+            "model": "user",
+            "attribute" : "name",
+            "function": "select",
+            "inputs" : ["id"]
           }
         },
         "person_icon": "people-big"
@@ -39,8 +36,9 @@
                 "description_title": "_lang",
                 "description_content": {
                   "query": {
-                    "table": "user",
-                    "function": "selectAll",
+                    "model": "user",
+                    "attribute" : "name",
+                    "function": "select",
                     "inputs" : []
                   }
                 }

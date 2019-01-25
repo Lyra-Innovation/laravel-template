@@ -1,29 +1,48 @@
 {
-  "view": "playerprofile",
-  "layout": {
-    "type": "profile",
-    "values": {
-      "surname_lang": "surname",
-      "age_lang": "_age",
-      "name_lang": null,
-      "name_value": "Eric"
-    },
-    "children": {
-      "profile-data": {
-        "type": "vertical-layout",
-        "values": {
-          "title_lang": "_profile_data"
-        },
-        "children": {
-          "0": {
-            "type": "description",
-            "values": {
-              "description_title": "_lang",
-              "description_content": "This is a cool person"
+  "views" : {
+    "view": "playerprofile",
+    "layout": {
+      "type": "profile",
+      "values": {
+        "surname_lang": "surname",
+        "age_lang": "_age",
+        "name_lang": null,
+        "name_value": {
+          "model" : "UserModel",
+          "id" : 1,
+          "attribute" : "name"
+        }
+      },
+      "children": {
+        "profile-data": {
+          "type": "vertical-layout",
+          "values": {
+            "title_lang": "_profile_data"
+          },
+          "children": {
+            "0": {
+              "type": "description",
+              "values": {
+                "description_title": "_lang",
+                "description_content": {
+                  "model" :"UserModel",
+                  "id" : 1,
+                  "attribute" : "description"
+                }
+              }
             }
           }
         }
       }
     }
+  },
+  "models" : {
+    "UserModel" : {
+      "1" : {
+        "name" : "Eric",
+        "description" : "I'm cool"
+      }
+    }
   }
 }
+

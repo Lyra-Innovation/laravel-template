@@ -30,8 +30,8 @@ class CoreServiceProvider extends ServiceProvider
             return new DataManager();
         });
 
-        $this->app->singleton(ViewComponenet::class, function ($app) {
-            return new ViewComponenet();
+        $this->app->singleton(ViewComponent::class, function ($app) {
+            return new ViewComponent();
         });
 
     }
