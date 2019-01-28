@@ -18,10 +18,16 @@ class ViewComponent {
 
         // check capabilities
 
-        return $this->mergeComponent($config->{$input->view}->layout, $input);
+        // merge
+        $output = new \StdClass();
+        foreach($input->views as $view => $viewInput) {
+            $output->$view = $this->mergeComponent($config->{$view}->layout, $viewInput);
+        }
+        return $output;
     }
 
     private function mergeComponent($config, $input) {
+
         // root for merging, $input = component
         // we can do checks here, call others...
         $output = new \stdClass();

@@ -21,27 +21,43 @@ class CoreController extends Controller {
     public function getConfig() {
 
         $inputString = '{
-          "view": "playerprofile",
-          "params": {
-            "name_value": {
-              "id": 2
-            }
-          },
-          "children": {
-            "profile-data": {
-              "params": {},
+          "views": {
+            "playerprofile": {
+              "view": "playerprofile",
+              "params": {
+                "name_value": {
+                  "id": 2
+                }
+              },
               "children": {
-                "0": {
-                  "params": {
-                    "description_content": {
-                      "id" : 2,
-                      "op" : "<>"
+                "profile-data": {
+                  "params": {},
+                  "children": {
+                    "0": {
+                      "params": {
+                        "description_content": {
+                          "id": 2,
+                          "op" : ">"
+                        }
+                      },
+                      "children": {}
                     }
                   }
                 }
               }
             }
-          }
+          },
+          "actions": [
+            {
+              "action": "create",
+              "model": "user",
+              "params": {
+                "id": null,
+                "name": "Martin",
+                "description": "I\'m god"
+              }
+            }
+          ]
         }
         ';
 
