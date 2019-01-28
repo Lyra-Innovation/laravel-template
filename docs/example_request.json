@@ -16,7 +16,8 @@
           "children": {
             "0": {
               "params": {
-                "id": 2
+                "id": 2,
+                "op" : ">"
               },
               "children": {}
             }

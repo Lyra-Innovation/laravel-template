@@ -12,6 +12,9 @@ class CoreController extends Controller {
     }
 
     public function getView($id) {
+
+      // process_actions();
+      // get();
         
     }
 
@@ -29,10 +32,12 @@ class CoreController extends Controller {
               "params": {},
               "children": {
                 "0": {
-                  "params" :{
-                    "id": 2
-                  },
-                  "children" : {}
+                  "params": {
+                    "description_content": {
+                      "id" : 2,
+                      "op" : "<>"
+                    }
+                  }
                 }
               }
             }

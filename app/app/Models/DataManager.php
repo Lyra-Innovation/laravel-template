@@ -28,7 +28,10 @@ class DataManager {
         // add where parameters
         $whereParams = [];
         foreach($inputQuery->inputs as $param) {
-            $whereParams[$param] = $input->{$param};
+            $op = '=';
+            if(property_exists($input, "op")) $op = $input->op;
+
+            $whereParams[] = [$param, $op, $input->{$param}];
         }
 
         $query = $model::where($whereParams);

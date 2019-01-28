@@ -39,7 +39,7 @@
                     "model": "user",
                     "attribute" : "name",
                     "function": "select",
-                    "inputs" : []
+                    "inputs" : ["id"]
                   }
                 }
               }
