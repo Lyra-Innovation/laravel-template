@@ -1,6 +1,7 @@
 FEATURES:
 
 - Basic select
+- Config imports
 
 
 MISSING:
@@ -8,7 +9,6 @@ MISSING:
 - Multiples
 - Authentication
 - Capabilities / Security
-- Config imports
 - Cache speedup
 - Actions
 - Langs

@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\Helpers\Helper;
 
 class DataManager {
     private $executedQueries;
@@ -28,9 +29,7 @@ class DataManager {
         // add where parameters
         $whereParams = [];
         foreach($inputQuery->inputs as $param) {
-            $op = '=';
-            if(property_exists($input, "op")) $op = $input->op;
-
+            $op = Helper::getKey($input, "op", "=");
             $whereParams[] = [$param, $op, $input->{$param}];
         }
 

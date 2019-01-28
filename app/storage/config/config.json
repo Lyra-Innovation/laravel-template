@@ -30,8 +30,8 @@
           },
           "children": {
             "0": {
-              "multiple": true,
               "type": "description",
+              "multiple" : true,
               "values": {
                 "description_title": "_lang",
                 "description_content": {
