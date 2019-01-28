@@ -11,10 +11,10 @@ class ViewComponent {
     }
 
     public function merge($input) {
-
         // read the config
-        $json = \Storage::get('config/config.json');
-        $config = json_decode($json);
+
+        $json = $this->readFile('config');
+        $config = $this->importConfig($json);
 
         // check capabilities
 
@@ -80,6 +80,28 @@ class ViewComponent {
 
         return $result;
 
+    }
+
+    function importConfig($input) {
+        if (is_array($input) || is_object($input)) {
+            foreach ($input as $key => $value) {
+                if(is_string($value)) {
+                    $arr = explode(' ', trim($value));
+                    if ($arr[0] == "import") $input->{$key} = $this->importConfig($this->readFile($arr[1]));
+                } else if (is_object($value)) {
+                    $input->{$key} = $this->importConfig($value);
+                } else if (is_array($input->{$key})) {
+                    for ($i = 0; $i < count($value); $i++) $input->{$key}[$i] = $this->importConfig($value[$i]);
+                }
+            }
+        }
+        return $input;
+    }
+
+    function readFile($input) {
+        $json = \Storage::get('config/' . $input . ".json");
+        $decoded = json_decode($json);
+        return $decoded;
     }
 
 }
