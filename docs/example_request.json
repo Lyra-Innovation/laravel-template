@@ -17,8 +17,7 @@
             "0": {
               "params": {
                 "description_content": {
-                  "id": 2,
-                  "op" : ">"
+                  "id": 2
                 }
               },
               "children": {}

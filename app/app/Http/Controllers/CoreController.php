@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\ViewComponent as ViewComponent;
+use App\ActionManager as ActionManager;
 
 class CoreController extends Controller {
 
-    public function __construct(ViewComponent $view)
+    public function __construct(ViewComponent $view, ActionManager $action) 
     {
-        $this->view = $view;
+        $this->viewManager = $view;
+        $this->actionManager = $action;
     }
 
     public function getView($id) {
@@ -37,7 +39,7 @@ class CoreController extends Controller {
                       "params": {
                         "description_content": {
                           "id": 2,
-                          "op" : ">"
+                          "op" : "<>"
                         }
                       },
                       "children": {}
@@ -62,8 +64,8 @@ class CoreController extends Controller {
         ';
 
         $input = json_decode($inputString);
-
-        return json_encode($this->view->merge($input));
+        $this->actionManager->processActions($input->actions);
+        return json_encode($this->viewManager->merge($input));
     }
 
 }

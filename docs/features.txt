@@ -2,13 +2,14 @@ FEATURES:
 
 - Basic select
 - Config imports
-
+- Models
+- Multiples
 
 MISSING:
 
-- Multiples
+- Query inputs
+- Actions
 - Authentication
 - Capabilities / Security
 - Cache speedup
-- Actions
 - Langs

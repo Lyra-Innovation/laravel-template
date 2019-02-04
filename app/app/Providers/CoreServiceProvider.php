@@ -34,5 +34,9 @@ class CoreServiceProvider extends ServiceProvider
             return new ViewComponent();
         });
 
+        $this->app->singleton(ActionManager::class, function ($app) {
+            return new ActionManager();
+        });
+
     }
 }

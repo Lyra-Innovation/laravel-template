@@ -15,4 +15,10 @@ class Helper
         $decoded = json_decode($json);
         return $decoded;
     }
+
+    public static function createIfProperty($obj, $key) {
+        if(!property_exists($obj, $key)) {
+            $obj->{$key} = new \stdClass();
+        }
+    }
 }
