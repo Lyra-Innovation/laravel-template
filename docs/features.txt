@@ -4,10 +4,10 @@ FEATURES:
 - Config imports
 - Models
 - Multiples
+- Query inputs
 
 MISSING:
 
-- Query inputs
 - Actions
 - Authentication
 - Capabilities / Security

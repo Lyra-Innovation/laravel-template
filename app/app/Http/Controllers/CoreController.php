@@ -11,6 +11,8 @@ class CoreController extends Controller {
     {
         $this->viewManager = $view;
         $this->actionManager = $action;
+
+        //$this->middleware('auth:api');
     }
 
     public function getView($id) {
@@ -65,7 +67,7 @@ class CoreController extends Controller {
 
         $input = json_decode($inputString);
         $this->actionManager->processActions($input->actions);
-        return json_encode($this->viewManager->merge($input));
+        return response()->json($this->viewManager->merge($input));
     }
 
 }
