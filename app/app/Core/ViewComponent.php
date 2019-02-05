@@ -17,8 +17,6 @@ class ViewComponent {
         $json = Helper::readFile('config');
         $config = $this->importConfig($json);
 
-        // check capabilities
-
         // merge
         $output = new \StdClass();
         foreach($input->views as $view => $viewInput) {
@@ -110,7 +108,6 @@ class ViewComponent {
         }
 
         return $result;
-
     }
 
     function importConfig($input) {

@@ -4,11 +4,12 @@ FEATURES:
 - Config imports
 - Models
 - Multiples
+- Query inputs
+- Authentication
 
 MISSING:
 
-- Query inputs
 - Actions
-- Authentication
+- Custom data manager functions
 - Capabilities / Security
 - Cache speedup
