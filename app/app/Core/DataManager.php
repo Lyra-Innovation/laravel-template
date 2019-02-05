@@ -42,14 +42,31 @@ class DataManager {
 
         $model = 'App\\' . ucfirst($inputQuery->model);
 
+        $query = $model::query();
+
         // add where parameters
         $whereParams = [];
-        foreach($inputQuery->inputs as $param) {
-            $op = Helper::getKey($input, "op", "=");
-            $whereParams[] = [$param, $op, $input->{$param}];
+        $inputs = Helper::getKey($inputQuery, "inputs", []);
+        foreach($inputs as $param) {
+            
+            if(is_string($param)) {
+                $param = $this->buildParamObject($param);
+            }
+          
+            $op = Helper::getKey($param, "op", "=");
+            $whereParams[] = [$param->name, $op, $input->{$param->name}];
         }
 
-        $query = $model::where($whereParams);
+        $query->where($whereParams);
+
+        $build = Helper::getKey($inputQuery, "build", new \stdClass());
+        foreach($build as $key => $value) {
+            // input query comes from the config
+            // should be save and there is no other way of doing it
+            // whitout punishing the user or having lots of code lines.
+            
+            eval("\$query->{\$key}($value);");
+        }
         
         $queryResult = $query->get();
         return $queryResult;
@@ -69,9 +86,7 @@ class DataManager {
     // Private
 
     private function addModel($type, $model) {
-
         Helper::createIfProperty($this->modelsGlobal, $type);
-        //Helper::createIfProperty($modelsGlobal->{$type}, $model->id);
         $this->modelsGlobal->{$type}->{$model->id} = $model;
     }
 
@@ -85,6 +100,12 @@ class DataManager {
             $response[] = $responseModel;
         }
         return $response;
+    }
+
+    private function buildParamObject($param) {
+        $ret = new \stdClass();
+        $ret->name = $param;
+        return $ret;
     }
 
 }

@@ -39,7 +39,14 @@
                     "model": "user",
                     "attribute" : "name",
                     "function": "select",
-                    "inputs" : ["id"]
+                    "inputs" : [{
+                      "name" : "id",
+                      "op" : "<>"
+                    }],
+                    "build" : {
+                      "orderBy" : "'name', 'asc'",
+                      "take" : 2
+                    }
                   }
                 }
               }

@@ -12,4 +12,3 @@ MISSING:
 - Authentication
 - Capabilities / Security
 - Cache speedup
-- Langs
