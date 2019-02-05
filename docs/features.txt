@@ -5,10 +5,11 @@ FEATURES:
 - Models
 - Multiples
 - Query inputs
+- Authentication
 
 MISSING:
 
 - Actions
-- Authentication
+- Custom data manager functions
 - Capabilities / Security
 - Cache speedup
