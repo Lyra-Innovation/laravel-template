@@ -49,7 +49,7 @@ class DataManager {
         $inputs = Helper::getKey($inputQuery, "inputs", []);
         foreach($inputs as $param) {
             
-            if(is_string($param)) {
+            if(is_string($param) || is_numeric($param)) {
                 $param = $this->buildParamObject($param);
             }
           
@@ -83,6 +83,50 @@ class DataManager {
         return $this->modelsGlobal;
     }
 
+    function create($input) {
+
+      $model = 'App\\' . ucfirst($input->model);
+
+      $query = new $model;
+
+      // add parameters
+      $inputs = $input->params;
+      foreach($inputs as $key=>$param) {
+          $query->$key = $param;
+      }
+
+      $query->save();
+  }
+
+  function delete($input) {
+      $model = 'App\\' . ucfirst($input->model);
+
+      $query = $model::query();
+
+      // add parameters
+      $inputs = $input->where;
+
+      $params = $this->transformToQuery($inputs);
+
+      $query->where($params)->delete();
+  }
+
+  function update($input) {
+    $model = 'App\\' . ucfirst($input->model);
+
+    $query = $model::query();
+
+    // add parameters
+    $inputs = $input->params;
+
+    $updateParams = $this->transformToQuery($inputs, true);
+
+    $idObj = new \stdClass();
+    $idObj->id = Helper::getKey($inputs, "id", -1);
+    $whereParams = $this->transformToQuery(Helper::getKey($input, "where", $idObj));
+    $query->where($whereParams)->update($updateParams);
+}
+
     // Private
 
     private function addModel($type, $model) {
@@ -108,4 +152,12 @@ class DataManager {
         return $ret;
     }
 
+    private function transformToQuery($inputs, $separator = false) {
+      $params = [];
+      foreach($inputs as $key => $param) {
+        if(!$separator) $params[] = [$key, $param];
+        else $params[$key] = $param;
+      }
+      return $params;
+    }
 }

@@ -10,8 +10,11 @@ class ActionManager {
         $this->dataManager = $dataManager;
     }
 
-    public function processActions() {
-
+    public function processActions($actions) {
+        foreach ($actions as $action) {
+            $type = $action->action;
+            $this->dataManager->{$type}($action);
+        }
     }
 
 }

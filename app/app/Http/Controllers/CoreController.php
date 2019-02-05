@@ -54,9 +54,24 @@ class CoreController extends Controller {
               "action": "create",
               "model": "user",
               "params": {
-                "id": null,
                 "name": "Martin",
-                "description": "I\'m god"
+                "email": "test3@test.com",
+                "password": 1234
+              }
+            },
+            {
+              "action": "update",
+              "model": "user",
+              "params": {
+                "name": "Martin",
+                "email": "test2@test.com"
+              }
+            },
+            {
+              "action": "delete",
+              "model": "user",
+              "where": {
+                "id": 10
               }
             }
           ]
