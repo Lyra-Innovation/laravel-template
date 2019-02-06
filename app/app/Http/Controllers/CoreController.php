@@ -28,23 +28,24 @@ class CoreController extends Controller {
           "views": {
             "playerprofile": {
               "view": "playerprofile",
-              "params": {
-                "name_value": {
-                  "id": 2
-                }
-              },
-              "children": {
-                "profile-data": {
-                  "params": {},
-                  "children": {
-                    "0": {
-                      "params": {
-                        "description_content": {
-                          "id": 2,
-                          "op" : "<>"
-                        }
-                      },
-                      "children": {}
+              "layout": {
+                "params": {
+                  "name_value": {
+                    "id": 2
+                  }
+                },
+                "children": {
+                  "profile-data": {
+                    "params": {},
+                    "children": {
+                      "0": {
+                        "params": {
+                          "description_content": {
+                            "id": 2
+                          }
+                        },
+                        "children": {}
+                      }
                     }
                   }
                 }

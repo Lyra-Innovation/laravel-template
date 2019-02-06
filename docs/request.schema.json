@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://lyrainnovation.com/config.json",
+  "title": "Request",
+  "description": "Describes the configuration of the request done by the frontend to the backend",
+  "type": "object",
+  "definitions": {
+
+    "children": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "description": "name of the children",
+          "type": "object",
+          "properties": {
+            "params": {
+              "$ref": "#/definitions/params"
+            },
+            "children": {
+              "$ref": "#/definitions/children"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "params": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "description": "name of the parameter",
+          "type": ["integer", "object", "string"]
+        }
+      }
+    },
+    "items": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "description": "action to perform in the database, by default can be 'create', 'update' and 'delete'",
+          "type": "string"
+        },
+        "model": {
+          "description": "name of the table of the database",
+          "type": "string"
+        },
+        "params": {
+          "description": "parameters to insert/update in the database. 'id' must be provided to do a single record update. To do a mass update the 'where' object must be filled",
+          "$ref": "#/definitions/params"
+        },
+        "where": {
+          "description": "parameters that must match the database to do a mass update or to delete",
+          "$ref": "#/definitions/params"
+        }
+      }
+    }
+  },
+
+  "properties": {
+    "views": {
+      "description": "name of the view, it's just an identifier",
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "description": "root object",
+          "type": "object",
+          "properties": {
+            "view": {
+              "description": "whatever the frontend must show",
+              "type": "string"
+            },
+            "layout": {
+              "type": "object",
+              "properties": {
+                "params": {
+                  "$ref": "#/definitions/params"
+                },
+                "children": {
+                  "$ref": "#/definitions/children"
+                }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/items"
+      }
+    }
+  }
+}
