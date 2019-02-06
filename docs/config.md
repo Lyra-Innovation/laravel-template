@@ -2,47 +2,44 @@
 
 ## The import statment
 
+At any point in the json file instead of assigning a value, an import statement can be used. This will have the form of "import file". The file must be a .json located inside app/storage/config (can be located further inside this folder as long as the path is specified).
+These files follow the same rules and can use an import statement at any point.
 
-## Lenguage description
-
-
-### Root
-The root element it's an object with view attributes.
+An example:
 
 ```json
 
-{
-    "view1" : "import view1",
-    "view2" : "import view2"
+"children": {
+  "0": {
+    "type": "description",
+    "multiple" : true,
+    "values": {
+      "description_title": "_lang",
+      "description_content": {
+        "query": "import query"
+      }
+    }
+  }
 }
-
+             
 ```
 
-### View
-The view element normally describes a page in the frontend but in fact it's just a wrapper of things and can be used for other reasons.
- 
+Where query:
 
 ```json
 
 {
-    "view" : "name of the view, it's just an identifier"
-
-}
-
-```
-
-
-
-```json
-
-{
-    "model" : {
-        "description" :  "if it's a table it's the name of the table, else it's a name that it will appear for the frontend as a model but won't accept CUD operations",
-        "optional" : true,
-        "accepts" : ["string", "object"]  
-    },
-    "attribute" : "name of the atribute in the model"
-
+  "model": "user",
+  "attribute" : "name",
+  "function": "select",
+  "inputs" : [{
+    "name" : "id",
+    "op" : "<>"
+  }],
+  "build" : {
+    "orderBy" : "'name', 'asc'",
+    "take" : 2
+  }
 }
 
 ```
