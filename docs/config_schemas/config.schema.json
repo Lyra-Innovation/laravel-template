@@ -1,0 +1,80 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://lyrainnovation.com/config.json",
+    "title": "Config",
+    "description": "describes the configuration of a web page",
+    "type": "object",
+    "definitions": {
+
+      "viewComponent": {
+        "type": "object",
+        "properties": {
+          "type" : {
+            "description": "type of the componenet, the name should type should exist in the fronted",
+            "type" : "string"
+          },
+          "values" : {
+            "description": "",
+            "$ref": "#/definitions/values"
+          },
+          "children" : {
+            "type" : "object",
+            "patternProperties": {
+              "^.*$": {
+                "description": "children componenet rended by the parent in it's key position",
+                "$ref": "#/definitions/viewComponent"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["type"]
+      },
+
+      "query": {
+        "type": "object",
+        "properties": {
+          
+        }
+      },
+
+      "values" : {
+        "type" : "object",
+        "patternProperties": {
+          "^.*$": {
+            "oneOf": [
+              {
+                "type" : ["string", "integer"]
+              }, 
+              {
+                "type": "object", 
+                "properties": {
+                  "default" : {
+                    "type" : ["string", "integer"]
+                  },
+                  "query" : {
+                    "description": "",
+                    "$ref": "#/definitions/query"
+                  }
+                }
+              }
+            ]
+            
+          }
+        },
+        "additionalProperties": false
+      }
+
+    },
+    "properties": {
+      "view": {
+        "description": "name of the view, it's just an identifier",
+        "type": "string"
+      },
+      "layout" : {
+        "description" : "root viewComponent of the page",
+        "$ref": "#/definitions/viewComponent"
+      }
+    },
+    "required": [ "view", "layout"]
+  }
