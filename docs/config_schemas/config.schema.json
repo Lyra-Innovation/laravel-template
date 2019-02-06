@@ -34,8 +34,50 @@
       "query": {
         "type": "object",
         "properties": {
-          
-        }
+          "model" : {
+            "type" : "string",
+            "description": ""
+          },
+          "attribute" : {
+            "type" : "string",
+            "description": ""
+          },
+          "function" : {
+            "type" : "string"
+          },
+          "inputs" : {
+            "type" : "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type" : "string"
+                }, 
+                {
+                  "type": "object", 
+                  "properties": {
+                    "name" : {
+                      "type" : "string"
+                    },
+                    "op" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "build" : {
+            "type" : "object",
+            "patternProperties": {
+              "^.*$": {
+                "description": "",
+                "type" : ["string", "integer"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["function", "attribute"]
       },
 
       "values" : {
@@ -66,15 +108,19 @@
       }
 
     },
-    "properties": {
-      "view": {
-        "description": "name of the view, it's just an identifier",
-        "type": "string"
-      },
-      "layout" : {
-        "description" : "root viewComponent of the page",
-        "$ref": "#/definitions/viewComponent"
+    "patternProperties": {
+      "^.*$": {
+        "properties": {
+          "view": {
+            "description": "name of the view, it's just an identifier",
+            "type": "string"
+          },
+          "layout" : {
+            "description" : "root viewComponent of the page",
+            "$ref": "#/definitions/viewComponent"
+          }
+        },
+        "required": [ "view", "layout"]
       }
-    },
-    "required": [ "view", "layout"]
+    }
   }
