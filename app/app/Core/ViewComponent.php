@@ -6,21 +6,21 @@ use App\Helpers\Helper;
 class ViewComponent {
     private $obj;
     private $dataManager;
+    private $configManager;
 
-    public function __construct(DataManager $dataManager) {
+    public function __construct(DataManager $dataManager, ConfigManager $configManager) {
         $this->dataManager = $dataManager;
+        $this->configManager = $configManager;
     }
 
     public function merge($input) {
-        // read the config
 
-        $json = Helper::readFile('config');
-        $config = $this->importConfig($json);
+        $config = $this->configManager->getConfig();
 
         // merge
         $output = new \StdClass();
         foreach($input->views as $view => $viewInput) {
-            [$size, $output->$view] = $this->mergeComponent($config->{$view}->layout, $viewInput);
+            [$size, $output->$view] = $this->mergeComponent($config->{$view}->layout, $viewInput->layout);
         }
 
         // add models
@@ -36,7 +36,9 @@ class ViewComponent {
 
         $output->type = $config->type;
 
-        [$size, $values] = $this->extractValues($config->values, $input->params, $num);
+        $multiple = Helper::getKey($config, "multiple", false);
+
+        [$size, $values] = $this->extractValues($config->values, $input->params, $num, $multiple);
         $output->values = $values;
 
         // recursive call foreach children
@@ -60,28 +62,39 @@ class ViewComponent {
         $last = 1;
 
         while($newNum < $last) {
+
+            [$size, $component] = $this->mergeComponent($nextConfig, $input->children->{$key}, $newNum);
+            
             if($multiple) {
                 $newKey = $key . ":" . $newNum;
             }
-
-            [$size, $component] = $this->mergeComponent($nextConfig, $input->children->{$key}, $newNum);
-            $output->children->{$newKey} = $component;
+            
+            if(!$size == 0 || !$multiple) {
+                $output->children->{$newKey} = $component;
+            }
+            
             $last = $size;
             $newNum++;
         }
     }
 
-    private function extractValues($values, $input, $num) {
+    private function extractValues($values, $input, $num, $multiple) {
         $output = new \stdClass();
 
-        $size = 1;
+        $size = 0;
 
         foreach($values as $key => $value) {
             $values = $this->extractSingleValue($value, $input, $key);
             $newSize = count($values);
-            $output->{$key} = $num < $newSize ? $values[$num] : $values[0];
 
-            if($newSize > $size) $size = $newSize;
+            if($newSize == 0) {
+                $output->{$key} = $multiple ? [] : null;
+                $size = 0;
+            }
+            else {
+                $output->{$key} = $num < $newSize ? $values[$num] : $values[0];
+                if($newSize > $size) $size = $newSize;
+            }
         }
 
         return [$size, $output];
@@ -108,22 +121,6 @@ class ViewComponent {
         }
 
         return $result;
-    }
-
-    function importConfig($input) {
-        if (is_array($input) || is_object($input)) {
-            foreach ($input as $key => $value) {
-                if(is_string($value)) {
-                    $arr = explode(' ', trim($value));
-                    if ($arr[0] == "import") $input->{$key} = $this->importConfig(Helper::readFile($arr[1]));
-                } else if (is_object($value)) {
-                    $input->{$key} = $this->importConfig($value);
-                } else if (is_array($input->{$key})) {
-                    for ($i = 0; $i < count($value); $i++) $input->{$key}[$i] = $this->importConfig($value[$i]);
-                }
-            }
-        }
-        return $input;
     }
 
 }

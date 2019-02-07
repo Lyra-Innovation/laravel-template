@@ -26,8 +26,13 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
         $this->app->singleton(DataManager::class, function ($app) {
             return new DataManager();
+        });
+
+        $this->app->singleton(ConfigManager::class, function ($app) {
+            return new ConfigManager();
         });
 
         $this->app->singleton(ViewComponent::class, function ($app) {

@@ -66,15 +66,17 @@ class CoreController extends Controller {
               "action": "update",
               "model": "user",
               "params": {
-                "name": "Martin",
                 "email": "test2@test.com"
+              },
+              "where" : {
+                "name": "Martin"
               }
             },
             {
               "action": "delete",
               "model": "user",
               "where": {
-                "id": 10
+                "email": "test2@test.com"
               }
             }
           ]

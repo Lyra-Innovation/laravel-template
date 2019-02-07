@@ -21,7 +21,7 @@ class DataManager {
             $result = $this->{$query->function}($query, $input);        
         }
         catch (\FatalThrowableError $e){
-            $result = $this->customFunction();
+            $result = $this->customFunction($query, $input);
         }
 
         // if the config requests a model, we will return the result as a model
@@ -85,47 +85,47 @@ class DataManager {
 
     function create($input) {
 
-      $model = 'App\\' . ucfirst($input->model);
+        $model = 'App\\' . ucfirst($input->model);
 
-      $query = new $model;
+        $query = new $model;
 
-      // add parameters
-      $inputs = $input->params;
-      foreach($inputs as $key=>$param) {
-          $query->$key = $param;
-      }
+        // add parameters
+        $inputs = $input->params;
+        foreach($inputs as $key=>$param) {
+            $query->$key = $param;
+        }
 
-      $query->save();
-  }
+        $query->save();
+    }
 
-  function delete($input) {
-      $model = 'App\\' . ucfirst($input->model);
+    function delete($input) {
+        $model = 'App\\' . ucfirst($input->model);
 
-      $query = $model::query();
+        $query = $model::query();
 
-      // add parameters
-      $inputs = $input->where;
+        // add parameters
+        $inputs = $input->where;
 
-      $params = $this->transformToQuery($inputs);
+        $params = $this->transformToQuery($inputs);
 
-      $query->where($params)->delete();
-  }
+        $query->where($params)->delete();
+    }
 
-  function update($input) {
-    $model = 'App\\' . ucfirst($input->model);
+    function update($input) {
+        $model = 'App\\' . ucfirst($input->model);
 
-    $query = $model::query();
+        $query = $model::query();
 
-    // add parameters
-    $inputs = $input->params;
+        // add parameters
+        $inputs = $input->params;
 
-    $updateParams = $this->transformToQuery($inputs, true);
+        $updateParams = $this->transformToQuery($inputs, true);
 
-    $idObj = new \stdClass();
-    $idObj->id = Helper::getKey($inputs, "id", -1);
-    $whereParams = $this->transformToQuery(Helper::getKey($input, "where", $idObj));
-    $query->where($whereParams)->update($updateParams);
-}
+        $idObj = new \stdClass();
+        $idObj->id = Helper::getKey($inputs, "id", -1);
+        $whereParams = $this->transformToQuery(Helper::getKey($input, "where", $idObj));
+        $query->where($whereParams)->update($updateParams);
+    }
 
     // Private
 
@@ -153,11 +153,11 @@ class DataManager {
     }
 
     private function transformToQuery($inputs, $separator = false) {
-      $params = [];
-      foreach($inputs as $key => $param) {
-        if(!$separator) $params[] = [$key, $param];
-        else $params[$key] = $param;
-      }
-      return $params;
+        $params = [];
+        foreach($inputs as $key => $param) {
+            if(!$separator) $params[] = [$key, $param];
+            else $params[$key] = $param;
+        }
+        return $params;
     }
 }

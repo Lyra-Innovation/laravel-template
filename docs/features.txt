@@ -6,10 +6,10 @@ FEATURES:
 - Multiples
 - Query inputs
 - Authentication
+- Actions
 
 MISSING:
 
-- Actions
 - Custom data manager functions
 - Capabilities / Security
 - Cache speedup
