@@ -41,7 +41,8 @@
                     "function": "select",
                     "inputs" : [{
                       "name" : "id",
-                      "op" : "<>"
+                      "op" : "<>",
+                      "value" : "me"
                     }],
                     "build" : {
                       "orderBy" : "'name', 'asc'",

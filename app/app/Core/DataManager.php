@@ -45,18 +45,7 @@ class DataManager {
         $query = $model::query();
 
         // add where parameters
-        $whereParams = [];
-        $inputs = Helper::getKey($inputQuery, "inputs", []);
-        foreach($inputs as $param) {
-            
-            if(is_string($param) || is_numeric($param)) {
-                $param = $this->buildParamObject($param);
-            }
-          
-            $op = Helper::getKey($param, "op", "=");
-            $whereParams[] = [$param->name, $op, $input->{$param->name}];
-        }
-
+        $whereParams = $this->getParams($inputQuery, $input);
         $query->where($whereParams);
 
         $build = Helper::getKey($inputQuery, "build", new \stdClass());
@@ -72,11 +61,9 @@ class DataManager {
         return $queryResult;
     }
 
-    function customFunction() {
+    function customFunction($query, $input) {
         // extract the values
-        /*$attributeArray = $queryResult->map(function ($item) use ($inputQuery) {
-            return $item[$inputQuery->attribute];
-        });*/
+        return ($query->function)($this->getParams($query, $input));
     }
 
     function getModels() {
@@ -159,5 +146,20 @@ class DataManager {
             else $params[$key] = $param;
         }
         return $params;
+    }
+
+    private function getParams($inputQuery, $input) {
+        $whereParams = [];
+        $inputs = Helper::getKey($inputQuery, "inputs", []);
+        foreach($inputs as $param) {
+            
+            if(is_string($param) || is_numeric($param)) {
+                $param = $this->buildParamObject($param);
+            }
+          
+            $op = Helper::getKey($param, "op", "=");
+            $whereParams[] = [$param->name, $op, $input->{$param->name}];
+        }
+        return $whereParams;
     }
 }
