@@ -4,88 +4,29 @@ namespace App\Http\Controllers;
 
 use App\ViewComponent as ViewComponent;
 use App\ActionManager as ActionManager;
+use App\ConfigManager as ConfigManager;
+use Illuminate\Http\Request;
 
 class CoreController extends Controller {
 
-    public function __construct(ViewComponent $view, ActionManager $action) 
+    public function __construct(ViewComponent $view, ActionManager $action, ConfigManager $config) 
     {
         $this->viewManager = $view;
         $this->actionManager = $action;
+        $this->configManager = $config;
 
         //$this->middleware('auth:api');
     }
 
-    public function getView($id) {
-
-      // process_actions();
-      // get();
-        
+    public function getView(Request $request) {
+      $inputString = $request->getContent();
+      $input = json_decode($inputString);
+      $this->actionManager->processActions($input->actions);
+      return response()->json($this->viewManager->merge($input));
     }
 
     public function getConfig() {
-
-        $inputString = '{
-          "views": {
-            "playerprofile": {
-              "view": "playerprofile",
-              "layout": {
-                "params": {
-                  "name_value": {
-                    "id": 2
-                  }
-                },
-                "children": {
-                  "profile-data": {
-                    "params": {},
-                    "children": {
-                      "0": {
-                        "params": {
-                          "description_content": {
-                            "id": 2
-                          }
-                        },
-                        "children": {}
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "actions": [
-            {
-              "action": "create",
-              "model": "user",
-              "params": {
-                "name": "Martin",
-                "email": "test3@test.com",
-                "password": 1234
-              }
-            },
-            {
-              "action": "update",
-              "model": "user",
-              "params": {
-                "email": "test2@test.com"
-              },
-              "where" : {
-                "name": "Martin"
-              }
-            },
-            {
-              "action": "delete",
-              "model": "user",
-              "where": {
-                "email": "test2@test.com"
-              }
-            }
-          ]
-        }
-        ';
-
-        $input = json_decode($inputString);
-        $this->actionManager->processActions($input->actions);
-        return response()->json($this->viewManager->merge($input));
+        return response()->json($this->configManager->getConfig());
     }
 
 }

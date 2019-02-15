@@ -32,4 +32,4 @@ Route::group([
 });
 
 Route::get('config', 'CoreController@getConfig');
-Route::get('view/{name}', 'CoreController@getView');
+Route::post('view', 'CoreController@getView');
