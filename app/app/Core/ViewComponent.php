@@ -36,7 +36,7 @@ class ViewComponent {
         $output = new \stdClass();
 
         $output->type = $config->type;
-        $output->events = Helper::createIfProperty($config, $events, new \stdClass());
+        $output->events = Helper::getKey($config, "events", new \stdClass());
 
         $multiple = Helper::getKey($config, "multiple", false);
 
