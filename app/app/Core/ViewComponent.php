@@ -18,8 +18,8 @@ class ViewComponent {
         $config = $this->configManager->getConfig();
 
         // merge
-        $output = new \StdClass();
-        $output->views = new \StdClass();
+        $output = new \stdClass();
+        $output->views = new \stdClass();
         foreach($input->views as $key => $viewInput) {
             [$size, $output->views->$key] = $this->mergeComponent($config->{$viewInput->view}->layout, $viewInput->layout);
         }
