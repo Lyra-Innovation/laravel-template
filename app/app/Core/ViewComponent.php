@@ -36,6 +36,7 @@ class ViewComponent {
         $output = new \stdClass();
 
         $output->type = $config->type;
+        $output->events = $config->events;
 
         $multiple = Helper::getKey($config, "multiple", false);
 
