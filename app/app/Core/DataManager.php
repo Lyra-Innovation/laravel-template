@@ -158,8 +158,14 @@ class DataManager {
             }
           
             $op = Helper::getKey($param, "op", "=");
-            $whereParams[] = [$param->name, $op, $input->{$param->name}];
+            $param_input = $this->getParamInput($param, $input);
+            $whereParams[] = [$param->name, $op, $param_input];
         }
         return $whereParams;
+    }
+
+    private function getParamInput($param, $input) {
+        if(property_exists($param, "value")) return $param->value;
+        return $input->{$param->name};
     }
 }
