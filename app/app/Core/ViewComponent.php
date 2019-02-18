@@ -19,8 +19,9 @@ class ViewComponent {
 
         // merge
         $output = new \StdClass();
+        $output->views = new \StdClass();
         foreach($input->views as $key => $viewInput) {
-            [$size, $output->$key] = $this->mergeComponent($config->{$viewInput->view}->layout, $viewInput->layout);
+            [$size, $output->views->$key] = $this->mergeComponent($config->{$viewInput->view}->layout, $viewInput->layout);
         }
 
         // add models
