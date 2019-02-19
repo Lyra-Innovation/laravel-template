@@ -5,48 +5,57 @@
     "layout": {
       "type": "profile",
       "values": {
-        "surname_lang": "_surname",
-        "age_lang": {
-          "default": "_age"
-        },
-        "name_lang": {
-          "default": "_name"
-        },
-        "name_value": {
-          "query": {
-            "model": "user",
-            "attribute" : "name",
-            "function": "select",
-            "inputs" : ["id"]
-          }
-        },
-        "person_icon": "people-big"
+        "name": "name1",
+        "surname": "surname2"
       },
       "children": {
-        "profile-data": {
-          "type": "vertical-layout",
-          "values": {
-            "title_lang": "_profile_data"
-          },
+        "content": {
+          "type": "form-group",
+          "values": {},
           "children": {
             "0": {
-              "type": "description",
-              "multiple" : true,
+              "type": "menu-launcher",
+              "values": {},
+              "children": {
+                "0": {
+                  "type": "button",
+                  "values": {
+                    "type": "menu",
+                    "text": "ohla"
+                  },
+                  "events": {
+                    "click": {
+                      "action": "ModelAction",
+                      "params": {
+                        "action": "create",
+                        "model": "user",
+                        "params": {
+                          "name": "Martin",
+                          "email": "test3@test.com",
+                          "password": 1234
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "1": {
+              "type": "button",
               "values": {
-                "description_title": "_lang",
-                "description_content": {
-                  "query": {
+                "type": "menu",
+                "text": "ohla"
+              },
+              "events": {
+                "click": {
+                  "action": "ModelAction",
+                  "params": {
+                    "action": "create",
                     "model": "user",
-                    "attribute" : "name",
-                    "function": "select",
-                    "inputs" : [{
-                      "name" : "id",
-                      "op" : "<>",
-                      "value" : "me"
-                    }],
-                    "build" : {
-                      "orderBy" : "'name', 'asc'",
-                      "take" : 2
+                    "params": {
+                      "name": "Martin",
+                      "email": "test3@test.com",
+                      "password": 1234
                     }
                   }
                 }

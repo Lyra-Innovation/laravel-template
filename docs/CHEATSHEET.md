@@ -107,7 +107,11 @@ Available in:
       "function": "select",
       "inputs": [{
         "name": "name",
-        "value": "Martin"
+        "value": "Martin",
+        "build" : {
+          "orderBy" : "'name', 'asc'",
+          "take" : 2
+        }
       }]
     }
   }

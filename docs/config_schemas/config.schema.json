@@ -17,6 +17,10 @@
             "description": "",
             "$ref": "#/definitions/values"
           },
+          "events" : {
+            "description": "",
+            "$ref": "#/definitions/events"
+          },
           "children" : {
             "type" : "object",
             "patternProperties": {
@@ -104,7 +108,30 @@
             
           }
         },
-        "additionalProperties": false
+        "events" : {
+          "type" : "object",
+          "patternProperties": {
+            "^.*$": {
+              "oneOf": [
+                {
+                  "type" : ["string", "integer"]
+                }, 
+                {
+                  "type": "object", 
+                  "properties": {
+                    "action": {
+                      "type": "string"
+                    },
+                    "params": {
+                      "type": "object"
+                    }
+                  }
+                }
+              ]
+              
+            }
+          },
+          "additionalProperties": false
       }
 
     },
