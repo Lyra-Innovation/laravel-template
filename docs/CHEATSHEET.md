@@ -5,6 +5,7 @@ Or `How to build a impolute config.json`
 ## Events
 
 To dispatch a Redux action when a component event is emitted
+Special always available events: **init** and **destroy**
 
 ```json
 {
@@ -12,12 +13,24 @@ To dispatch a Redux action when a component event is emitted
   "values": {},
   "events": {
     // 'button' component has an event with the name 'click'
-    "click": {
-    "action": "SetVariable",
-    "params": {
-      "name": "myFrontendVariableName",
-      // object dispatched by 'button' component has a 'times' property, which will susbtitute this value
-      "value": "$event.times"
+    "click": [{
+      "action": "SetVariable",
+      "params": {
+        "name": "myFrontendVariableName",
+        // object dispatched by 'button' component has a 'times' property, which will susbtitute this value
+        "value": "$event.times"
+      }
+    }, {
+      "bubble": "closeDialog",
+      "params": {
+        "save": true
+      }
+    }],
+    "init": {
+      ...
+    },
+    "destroy": {
+      ...
     }
   }
 }
@@ -30,23 +43,49 @@ Available `action` values: `ModelAction`, `SetVariable`, `NavigateRoute`, `ShowN
 ```json
 {
   "events": {
-    "click": {
-      "action": "ModelAction",
-      "params": {
-        "action": "create",
-        "model": "user",
+    "click": [
+      {
+        "action": "ModelAction",
         "params": {
-          "name": "Martin",
-          "email": "test3@test.com",
-          "password": 1234
+          "action": "create",
+          "model": "user",
+          "params": {
+            "name": "Martin",
+            "email": "test3@test.com",
+            "password": 1234
+          }
         }
       }
-    }
+    ]
   }
 }
 ```
 
 ## Dynamic select
+
+### \$me
+
+Is substituted by the logged user's id
+
+```json
+{
+  "values": {
+    "userId": "$me"
+  }
+}
+```
+
+### By model
+
+```json
+{
+  "model": "users",
+  "attribute": "name",
+  "id": "0"
+}
+```
+
+### By scopes
 
 ```json
 {
@@ -83,7 +122,7 @@ Available in:
 - `events.params`
 
 ```json
-"events": {
+"eventsName": [{
   "action": "NavigateRoute",
   "params": {
     "route": {
@@ -91,7 +130,7 @@ Available in:
       "select": "selectedUserId
     }
   }
-}
+}]
 ```
 
 ## Query inputs
@@ -190,15 +229,17 @@ This code imports `anotherView.json` and puts its code in place of the `import` 
     }
   },
   "events": {
-    "formSubmitted": {
-      "action": "ModelAction",
-      "params": {
-        "action": "create",
+    "formSubmitted": [
+      {
+        "action": "ModelAction",
         "params": {
-          "name": "$event.value.name" // 'name' has to be in a controlName of the children of the form
+          "action": "create",
+          "params": {
+            "name": "$event.value.name" // 'name' has to be in a controlName of the children of the form
+          }
         }
       }
-    }
+    ]
   }
 }
 ```
