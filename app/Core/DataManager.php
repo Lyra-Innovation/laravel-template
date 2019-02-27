@@ -14,7 +14,7 @@ class DataManager {
 
     function exec($query, $input) {
 
-        $result = "";
+        $result = null;
 
          // we will try to instantiate the model
         try {

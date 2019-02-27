@@ -86,28 +86,42 @@ class ViewComponent {
         $size = 0;
 
         foreach($values as $key => $value) {
-            $values = $this->extractSingleValue($value, $input, $key);
+            $isList = Helper::getKey($value, "isList", false);
+
+            $values = $this->extractSingleValue($value, $input, $key, $isList);
             $newSize = count($values);
 
             if($newSize == 0) {
-                $output->{$key} = $multiple ? [] : null;
+                // if it's empty, we can return an empty list or a null value
+                $output->{$key} = $isList ? [] : null;
                 $size = 0;
             }
+            else if($isList) {
+                // if we expect a list, we return all the values
+                $output->{$key} = $values;
+                $size = 1;
+            }
             else {
+                // if there are more values and it's not a list, we return the $num value
                 $output->{$key} = $num < $newSize ? $values[$num] : $values[0];
                 if($newSize > $size) $size = $newSize;
             }
+            
         }
 
         return [$size, $output];
     }
 
-    private function extractSingleValue($value, $input, $key) {
+    private function extractSingleValue($value, $input, $key, $isList) {
         // always returns string
 
         // simple case where the value is already an string
         if(is_string($value)) {
             return [$value];
+        }
+
+        if(is_array($value)) {
+            return $value;
         }
 
         $result = null;
@@ -118,7 +132,7 @@ class ViewComponent {
         }
 
         //if query result is null, we get the default value
-        if($result === null) {
+        if($result == null || ($isList && $result == [])) {
             $result = [$value->default];
         }
 
