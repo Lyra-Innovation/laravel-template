@@ -37,10 +37,10 @@ class ViewComponent {
 
         $output->type = $config->type;
         $output->events = Helper::getKey($config, "events", new \stdClass());
-
         $multiple = Helper::getKey($config, "multiple", false);
+        $values = Helper::getKey($config, "values", new \stdClass());
 
-        [$size, $values] = $this->extractValues($config->values, $input->params, $num, $multiple);
+        [$size, $values] = $this->extractValues($values, $input->params, $num, $multiple);
         $output->values = $values;
 
         // recursive call foreach children
