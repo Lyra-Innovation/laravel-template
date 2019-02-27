@@ -2,51 +2,69 @@
 
 namespace App;
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-
-class User extends Authenticatable implements JWTSubject
+/**
+ * @property int $id
+ * @property int $sector_id
+ * @property int $user_responsable_id
+ * @property string $name
+ * @property string $password
+ * @property string $description
+ * @property string $image
+ * @property string $idea_title
+ * @property string $idea_description
+ * @property string $idea_needs
+ * @property string $idea_value
+ * @property string $idea_clients
+ * @property boolean $setup_validation
+ * @property boolean $end_validation
+ * @property string $comment_validation
+ * @property string $type
+ * @property string $remember_token
+ * @property string $created_at
+ * @property string $updated_at
+ * @property Sector $sector
+ * @property User $user
+ * @property Log[] $logs
+ * @property UserItem[] $userItems
+ */
+class User extends Model
 {
-    use Notifiable;
-
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $fillable = ['sector_id', 'user_responsable_id', 'name', 'password', 'description', 'image', 'idea_title', 'idea_description', 'idea_needs', 'idea_value', 'idea_clients', 'setup_validation', 'end_validation', 'comment_validation', 'type', 'remember_token', 'created_at', 'updated_at'];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
-    public function getJWTIdentifier()
+    public function sector()
     {
-        return $this->getKey();
+        return $this->belongsTo('App\Sector');
     }
 
     /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function getJWTCustomClaims()
+    public function user()
     {
-        return [];
+        return $this->belongsTo('App\User', 'user_responsable_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany('App\Log');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userItems()
+    {
+        return $this->hasMany('App\UserItem');
     }
 }

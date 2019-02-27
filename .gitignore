@@ -12,3 +12,4 @@ npm-debug.log
 yarn-error.log
 /storage/config
 /public/assets/lang
+/app/Models
