@@ -9,6 +9,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
+        "mpociot/laravel-test-factory-helper": "^0.5.0",
         "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {
@@ -24,7 +25,8 @@
             "database/seeds",
             "database/factories",
             "app/Models",
-            "app/Core"
+            "app/Core",
+            "app/CustomQueries"
         ],
         "psr-4": {
             "App\\": "app/"

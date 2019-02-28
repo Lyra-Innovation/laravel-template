@@ -133,7 +133,8 @@ class ViewComponent {
 
         //if query result is null, we get the default value
         if($result == null || ($isList && $result == [])) {
-            $result = [$value->default];
+            $default = Helper::getKey($value, "default", null); 
+            $result = [$default];
         }
 
         return $result;

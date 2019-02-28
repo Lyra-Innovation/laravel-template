@@ -16,16 +16,24 @@ class DataManager {
 
         $result = null;
 
-         // we will try to instantiate the model
-        try {
-            $result = $this->{$query->function}($query, $input);        
+        $customQuery = property_exists($query, "class");
+        if(!$customQuery) {
+            // we will try to instantiate the model
+            try {
+                $result = $this->{$query->function}($query, $input);        
+            }
+            catch (\FatalThrowableError $e){
+                $customQuery = true;
+            }
         }
-        catch (\FatalThrowableError $e){
+
+        if($customQuery) {
             $result = $this->customFunction($query, $input);
+            if(!is_array($result)) $result = [$result];
         }
 
         // if the config requests a model, we will return the result as a model
-        if($query->model) {
+        if(property_exists($query, "model")) {
 
             foreach($result as $model) {
                 $this->addModel($query->model, $model);
@@ -63,7 +71,9 @@ class DataManager {
 
     function customFunction($query, $input) {
         // extract the values
-        return ($query->function)($this->getParams($query, $input));
+        $className = 'App\\' . ucfirst($query->class);
+        $class = new $className;
+        return $class->{$query->function}($query, $input);
     }
 
     function getModels() {
