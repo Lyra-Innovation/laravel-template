@@ -193,6 +193,47 @@ This code imports `anotherView.json` and puts its code in place of the `import` 
 
 # Advanced
 
+## Custom queries
+
+- Declare a function in php code that looks like:
+
+```php
+<?php
+
+namespace App;
+use App\Helpers\Helper;
+
+class UserQuery {
+
+    function selectUserAdminData($query, $input) {
+        $user = new \StdClass();
+
+        $user->id = $input->id;
+        $user->name = "Test";
+        $user->per = "10";
+
+        return $user;
+    }
+}
+```
+
+- And then you can add to any query:
+
+```json
+"query": {
+  "model" : "CustomUserModel",
+  "attribute": "name",
+  "class" : "UserQuery",
+  "function": "selectUserAdminData",
+  "inputs": [{
+    "name": "id",
+    "selectFrom": "$me"
+  }]
+}
+```
+
+**If you declare a custom model you need to append a id field like it's done in the example in the response.**
+
 ## Routes
 
 **Precondition**: the parent of the rendered component has to contain a `<router-outlet>` element.
