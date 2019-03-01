@@ -32,13 +32,14 @@ class DataManager {
             if(!is_array($result)) $result = [$result];
         }
 
-        // if the config requests a model, we will return the result as a model
-        if(property_exists($query, "model")) {
+        // if the config requests a model and we have one, we will return the result as a model
+        if(property_exists($query, "model") && 
+            $result instanceof Illuminate\Database\Eloquent\Collection) {
 
             foreach($result as $model) {
                 $this->addModel($query->model, $model);
             }
-            
+
             $result = $this->getResponseFromModels($query, $result);
 
         }
@@ -56,16 +57,24 @@ class DataManager {
         $whereParams = $this->getParams($inputQuery, $input);
         $query->where($whereParams);
 
+        $queryResult = null;
+
         $build = Helper::getKey($inputQuery, "build", new \stdClass());
         foreach($build as $key => $value) {
             // input query comes from the config
             // should be save and there is no other way of doing it
             // whitout punishing the user or having lots of code lines.
             
-            eval("\$query->{\$key}($value);");
+            eval("\$queryResult = \$query->{\$key}($value);");
+        }
+
+        if($queryResult == null) {
+            $queryResult = $query->get();
+        }
+        else if(!is_array($queryResult)) {
+            $queryResult = [$queryResult];
         }
         
-        $queryResult = $query->get();
         return $queryResult;
     }
 

@@ -116,7 +116,7 @@ class ViewComponent {
         // always returns string
 
         // simple case where the value is already an string
-        if(is_string($value)) {
+        if(is_string($value) || is_bool($value) || is_numeric($value)) {
             return [$value];
         }
 
