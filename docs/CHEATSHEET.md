@@ -133,6 +133,17 @@ Available in:
 }]
 ```
 
+-`routes`
+Options available: `$me`, `scope=global`, and models selectors:
+
+```html
+<ren-button href="/game/summary/:$me"> </ren-button>
+<ren-button href="/game/summary/:scope=global:select=variableName">
+</ren-button>
+<ren-button href="/game/summary/:model=User:attribute=name:id=1">
+</ren-button>
+```
+
 ## Query inputs
 
 - How to send a static input value
