@@ -34,7 +34,7 @@ class DataManager {
 
         // if the config requests a model and we have one, we will return the result as a model
         if(property_exists($query, "model") && 
-            $result instanceof Illuminate\Database\Eloquent\Collection) {
+            $result instanceof \Illuminate\Database\Eloquent\Collection) {
 
             foreach($result as $model) {
                 $this->addModel($query->model, $model);
