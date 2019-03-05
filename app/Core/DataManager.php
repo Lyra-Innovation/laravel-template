@@ -29,12 +29,13 @@ class DataManager {
 
         if($customQuery) {
             $result = $this->customFunction($query, $input);
-            if(!is_array($result)) $result = [$result];
+            if(!Helper::checkIfArray($result)) {
+                $result = [$result];
+            }
         }
 
         // if the config requests a model and we have one, we will return the result as a model
-        if(property_exists($query, "model") && 
-            $result instanceof \Illuminate\Database\Eloquent\Collection) {
+        if(property_exists($query, "model") && Helper::checkIfCollection($query)) {
 
             foreach($result as $model) {
                 $this->addModel($query->model, $model);
@@ -42,6 +43,14 @@ class DataManager {
 
             $result = $this->getResponseFromModels($query, $result);
 
+        }
+        // we may want to pick only the attribute
+        else if(property_exists($query, "attribute")) {
+            $response = [];
+            foreach($result as $value) {
+                $response[] = Helper::getKey($value, $query->attribute, null);
+            }
+            $result = $response;
         }
        
         return $result;
