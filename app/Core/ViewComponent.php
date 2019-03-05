@@ -66,7 +66,7 @@ class ViewComponent {
         while($newNum < $last) {
 
             [$size, $component] = $this->mergeComponent($nextConfig, $input->children->{$key}, $newNum);
-            
+
             if($multiple) {
                 $newKey = $key . ":" . $newNum;
             }
@@ -86,12 +86,15 @@ class ViewComponent {
         $size = 0;
 
         foreach($values as $key => $value) {
+            $newSize = 0;
             $isList = Helper::getKey($value, "isList", false);
 
-            $values = $this->extractSingleValue($value, $input, $key, $isList);
-            $newSize = count($values);
+            [$isStatic, $values] = $this->extractSingleValue($value, $input, $key, $isList);
+            if(!$isStatic) {
+                $newSize = count($values);
+            }
 
-            if($newSize == 0) {
+            if($newSize == 0 && !$isStatic) {
                 // if it's empty, we can return an empty list or a null value
                 $output->{$key} = $isList ? [] : null;
                 $size = 0;
@@ -117,14 +120,16 @@ class ViewComponent {
 
         // simple case where the value is already an string
         if(is_string($value) || is_bool($value) || is_numeric($value)) {
-            return [$value];
+            return [true , [$value]];
         }
 
         if(is_array($value)) {
-            return $value;
+            return [true , [$value]];
         }
 
         $result = null;
+        $isStatic = false;
+
         //first we run the query if present
         if(property_exists($value, "query")) {
             $query_params = Helper::getKey($input, $key, new \stdClass());            
@@ -135,9 +140,10 @@ class ViewComponent {
         if($result == null || ($isList && $result == [])) {
             $default = Helper::getKey($value, "default", null); 
             $result = [$default];
+            $isStatic = true;
         }
 
-        return $result;
+        return [$isStatic, $result];
     }
 
 }
