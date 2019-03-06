@@ -116,14 +116,17 @@ class ViewComponent {
     }
 
     private function extractSingleValue($value, $input, $key, $isList) {
-        // always returns string
-
         // simple case where the value is already an string
         if(is_string($value) || is_bool($value) || is_numeric($value)) {
             return [true , [$value]];
         }
 
         if(is_array($value)) {
+            return [true , [$value]];
+        }
+
+        // should be an object from now on
+        if(property_exists($value, "scope")) {
             return [true , [$value]];
         }
 
