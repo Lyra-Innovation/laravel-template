@@ -80,10 +80,10 @@ class DataManager {
         if($queryResult == null) {
             $queryResult = $query->get();
         }
-        else if(!is_array($queryResult)) {
+        else if(!Helper::checkIfArray($queryResult)) {
             $queryResult = [$queryResult];
         }
-        
+
         return $queryResult;
     }
 
