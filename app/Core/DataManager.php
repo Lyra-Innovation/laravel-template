@@ -35,7 +35,7 @@ class DataManager {
         }
 
         // if the config requests a model and we have one, we will return the result as a model
-        if(property_exists($query, "model") && Helper::checkIfCollection($query)) {
+        if(property_exists($query, "model") && Helper::checkIfCollection($result)) {
 
             foreach($result as $model) {
                 $this->addModel($query->model, $model);
