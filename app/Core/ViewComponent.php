@@ -126,18 +126,20 @@ class ViewComponent {
         }
 
         // should be an object from now on
-        if(property_exists($value, "scope")) {
+        if(!property_exists($value, "query")) {
             return [true , [$value]];
         }
+
+        // we have a query
 
         $result = null;
         $isStatic = false;
 
         //first we run the query if present
-        if(property_exists($value, "query")) {
-            $query_params = Helper::getKey($input, $key, new \stdClass());            
-            $result = $this->dataManager->exec($value->query, $query_params);
-        }
+        
+        $query_params = Helper::getKey($input, $key, new \stdClass());            
+        $result = $this->dataManager->exec($value->query, $query_params);
+        
 
         //if query result is null, we get the default value
         if($result == null || ($isList && $result == [])) {
