@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Helper
 {
-    public static function getKey($obj, $key, $default) {
+    public static function getKey($obj, $key, $default = null) {
         $return = $default;
         if(property_exists($obj, $key)) $return = $obj->{$key};
         return $return;
