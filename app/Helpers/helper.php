@@ -35,4 +35,16 @@ class Helper
 
         return false;
     }
+
+    public static function getQueryValues($query) {
+        $output = new \stdClass();
+        foreach($query->inputs as $input) {
+            if(property_exists($input, "value")) {
+                $output->{$input->name} = $input->value;
+            }
+        }
+        return $output;
+    }
+
+
 }

@@ -48,7 +48,7 @@ class DataManager {
         else if(property_exists($query, "attribute")) {
             $response = [];
             foreach($result as $value) {
-                $response[] = Helper::getKey($value, $query->attribute, null);
+                $response[] = $value->{$query->attribute};
             }
             $result = $response;
         }
@@ -127,6 +127,7 @@ class DataManager {
     }
 
     function update($input) {
+
         $model = 'App\\' . ucfirst($input->model);
 
         $query = $model::query();
