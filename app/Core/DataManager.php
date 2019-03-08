@@ -29,18 +29,28 @@ class DataManager {
 
         if($customQuery) {
             $result = $this->customFunction($query, $input);
-            if(!is_array($result)) $result = [$result];
+            if(!Helper::checkIfArray($result)) {
+                $result = [$result];
+            }
         }
 
-        // if the config requests a model, we will return the result as a model
-        if(property_exists($query, "model")) {
+        // if the config requests a model and we have one, we will return the result as a model
+        if(property_exists($query, "model") && Helper::checkIfCollection($result)) {
 
             foreach($result as $model) {
                 $this->addModel($query->model, $model);
             }
-            
+
             $result = $this->getResponseFromModels($query, $result);
 
+        }
+        // we may want to pick only the attribute
+        else if(property_exists($query, "attribute")) {
+            $response = [];
+            foreach($result as $value) {
+                $response[] = $value->{$query->attribute};
+            }
+            $result = $response;
         }
        
         return $result;
@@ -56,16 +66,24 @@ class DataManager {
         $whereParams = $this->getParams($inputQuery, $input);
         $query->where($whereParams);
 
+        $queryResult = null;
+
         $build = Helper::getKey($inputQuery, "build", new \stdClass());
         foreach($build as $key => $value) {
             // input query comes from the config
             // should be save and there is no other way of doing it
             // whitout punishing the user or having lots of code lines.
             
-            eval("\$query->{\$key}($value);");
+            eval("\$queryResult = \$query->{\$key}($value);");
         }
-        
-        $queryResult = $query->get();
+
+        if($queryResult == null) {
+            $queryResult = $query->get();
+        }
+        else if(!Helper::checkIfArray($queryResult)) {
+            $queryResult = [$queryResult];
+        }
+
         return $queryResult;
     }
 
@@ -109,6 +127,7 @@ class DataManager {
     }
 
     function update($input) {
+
         $model = 'App\\' . ucfirst($input->model);
 
         $query = $model::query();
