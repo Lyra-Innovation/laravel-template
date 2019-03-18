@@ -15,6 +15,6 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::fallback('/', function () {
+Route::fallback(function () {
     return view('index');
 });
