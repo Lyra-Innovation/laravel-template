@@ -3,7 +3,7 @@ RewriteCond %{HTTP:Authorization} ^(.*)
 RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 
 RewriteCond %{ENV:REDIRECT_STATUS} ^$ 
-RewriteRule ^(.*)$ /public/$1 [L]
+RewriteRule ^(.*)$ public/$1 [L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
