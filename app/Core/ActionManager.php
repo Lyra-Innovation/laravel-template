@@ -21,6 +21,18 @@ class ActionManager {
             while($i < $maxNum) {
                 [$maxNum, $singleAction] = $this->getSingleAction($action, $i);
 
+                // check that can be performed
+                // query.class, query.function
+                $condition = Helper::getKey($action, "condition", null);
+                
+                if($condition) {
+                    $inputs = Helper::getQueryValues($condition);
+                    if(($this->dataManager->customFunction($condition, $inputs))) {
+                        $i++;
+                        continue;
+                    }
+                }
+
                 // exec function
                 $type = $action->action;
                 $this->dataManager->{$type}($singleAction);
