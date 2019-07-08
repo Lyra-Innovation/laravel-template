@@ -16,22 +16,33 @@ class DataManager {
 
         $result = null;
 
-        $customQuery = property_exists($query, "class");
-        if(!$customQuery) {
-            // we will try to instantiate the model
-            try {
-                $result = $this->{$query->function}($query, $input);        
-            }
-            catch (\FatalThrowableError $e){
-                $customQuery = true;
-            }
-        }
+        // if we have already performed the query and is cacheable
+        $cacheable= Helper::getKey($query, "cacheable", true);
+        $queryId = $this->queryInCache($query, $input);
 
-        if($customQuery) {
-            $result = $this->customFunction($query, $input);
-            if(!Helper::checkIfArray($result)) {
-                $result = [$result];
+        if($cacheable && $queryId) {
+            $result = $this->getQueryFromCache($queryId);
+        }
+        else {
+            $customQuery = property_exists($query, "class");
+            if(!$customQuery) {
+                // we will try to instantiate the model
+                try {
+                    $result = $this->{$query->function}($query, $input);        
+                }
+                catch (\FatalThrowableError $e){
+                    $customQuery = true;
+                }
             }
+    
+            if($customQuery) {
+                $result = $this->customFunction($query, $input);
+                if(!Helper::checkIfArray($result)) {
+                    $result = [$result];
+                }
+            }
+
+            $this->addQueryToCache($query, $input, $result);
         }
 
         // if the config requests a model and we have one, we will return the result as a model
@@ -196,5 +207,42 @@ class DataManager {
     private function getParamInput($param, $input) {
         if(property_exists($param, "value")) return $param->value;
         return $input->{$param->name};
+    }
+
+    // Cache
+    private function getQueryId($query, $inputs) {
+        $queryId = "";
+        $queryId .= Helper::getKey($query, "class", "");
+        $queryId .= Helper::getKey($query, "function", "");
+        $queryId .= Helper::getKey($query, "model", "");
+
+        $buildParams = Helper::getKey($query, "build", new \StdClass());
+
+        foreach ($buildParams as $key => $value) {
+            $queryId .= "Build:" . $key . ":" . $value;
+        }
+        
+        foreach ($inputs as $key => $value) {
+            $queryId .= $key . ":" . $value;
+        }
+
+        return $queryId;
+    }
+
+    private function queryInCache($query, $inputs) {
+        $queryId = $this->getQueryId($query, $inputs);
+        if(property_exists($this->queryCache, $queryId)) {
+            return $queryId;
+        }
+        return 0;
+    }
+
+    private function addQueryToCache($query, $inputs, $result) {
+        $queryId = $this->getQueryId($query, $inputs);
+        $this->queryCache->{$queryId} = $result;
+    }
+
+    private function getQueryFromCache($queryId) {
+        return $this->queryCache->{$queryId};
     }
 }
